@@ -1,0 +1,71 @@
+DROP TABLE IF EXISTS employee CASCADE;
+DROP TABLE IF EXISTS branch CASCADE;
+DROP TABLE IF EXISTS customer CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
+DROP TABLE IF EXISTS account_type CASCADE;
+DROP TABLE IF EXISTS transaction CASCADE;
+DROP TABLE IF EXISTS loans CASCADE;
+
+--Branch
+CREATE TABLE branch
+(address varchar (50) PRIMARY KEY,
+bank varchar (20)
+);
+
+--Employee
+CREATE TABLE employee
+(type varchar (16),
+name varchar (25),
+SSN int PRIMARY KEY, 
+salary decimal (25, 2),
+address varchar (50),
+worksAt varchar (50),
+FOREIGN KEY (worksAt) REFERENCES branch 
+);
+
+--Customer
+CREATE TABLE customer 
+(customerID int PRIMARY KEY,
+name varchar(25), 
+address varchar(50),
+homeBranch varchar(50),
+FOREIGN KEY (homeBranch) REFERENCES branch
+);
+
+--Account Type
+CREATE TABLE account_type
+(type varchar (16) PRIMARY KEY,
+minimum_balance decimal (15, 2),
+interest decimal(3, 3),
+fee decimal(15, 2)
+);
+
+--Account
+CREATE TABLE account
+(accountID int PRIMARY KEY, 
+balance decimal(15,2),
+isAccountType varchar (25),
+FOREIGN KEY (isAccountType) REFERENCES account_type,
+customerID int, 
+FOREIGN KEY (customerID) REFERENCES customer
+);
+
+--Transaction
+CREATE TABLE transaction
+(amount decimal (15, 2),
+description varchar (50),
+type varchar (16),
+accountID int,
+FOREIGN KEY (accountID) REFERENCES account,
+PRIMARY KEY (amount, type)
+);
+
+--Loans
+CREATE TABLE loans
+(loanID int PRIMARY KEY,
+runtime varchar (50),
+amount decimal (15, 2),
+interest_schedule varchar (50),
+accountID int,
+FOREIGN KEY (accountID) REFERENCES account
+);
