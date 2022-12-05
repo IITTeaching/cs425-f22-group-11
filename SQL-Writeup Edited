@@ -1,0 +1,94 @@
+DROP TABLE IF EXISTS employee CASCADE;
+DROP TABLE IF EXISTS branch CASCADE;
+DROP TABLE IF EXISTS customer CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
+DROP TABLE IF EXISTS account_type CASCADE;
+DROP TABLE IF EXISTS transaction CASCADE;
+DROP TABLE IF EXISTS loans CASCADE;
+
+--Branch
+CREATE TABLE branch
+(address varchar (50) PRIMARY KEY,
+bank varchar (20)
+);
+
+--Employee
+CREATE TABLE employee
+(type varchar (16), 
+name varchar (25),
+SSN int PRIMARY KEY, 
+salary decimal (25, 2),
+address varchar (50),
+username varchar (50) UNIQUE, -------- Added because we needed a login username and password
+password varchar (50), --------
+worksAt varchar (50),
+FOREIGN KEY (worksAt) REFERENCES branch 
+);
+
+--Customer
+CREATE TABLE customer 
+(customerID int PRIMARY KEY,
+name varchar(25), 
+address varchar(50),
+username varchar (50) UNIQUE, -------- Added because we needed a login username and password
+password varchar (50), ------
+homeBranch varchar(50),
+FOREIGN KEY (homeBranch) REFERENCES branch
+);
+
+--Account Type
+CREATE TABLE account_type
+(type varchar (16) PRIMARY KEY,
+minimum_balance decimal (15, 2),
+interest decimal(3, 3),
+fee decimal(15, 2)
+);
+
+--Account
+CREATE TABLE account
+(accountID int, 
+balance decimal(15,2),
+isAccountType varchar (25),
+FOREIGN KEY (isAccountType) REFERENCES account_type,
+customerID int, 
+FOREIGN KEY (customerID) REFERENCES customer,
+bank varchar(20), -------- Added beceause we needed to specify which account is at which bank
+PRIMARY KEY (accountID, bank)
+);
+
+--Transaction
+CREATE TABLE transaction
+(tID int PRIMARY KEY, --------Added a transaction ID to differentiate between transactions
+amount decimal (15, 2),
+description date, -------- Changed description to date
+type varchar (20), -------- Changed to 20 because 'external transfer' is longer that 16 characters
+accountID int,
+toAccount int, -------- Added because transfers need an account that money is transferred to
+bank varchar(20), -------- Added beceause we needed to specify which account is at which bank
+FOREIGN KEY (accountID, bank) REFERENCES account
+--PRIMARY KEY (amount, type)
+);
+
+--Loans
+CREATE TABLE loans
+(loanID int PRIMARY KEY,
+runtime varchar (50),
+amount decimal (15, 2),
+interest_schedule varchar (50),
+accountID int,
+bank varchar(20), -------- Added beceause we needed to specify which account is at which bank
+FOREIGN KEY (accountID, bank) REFERENCES account
+);
+
+INSERT INTO branch VALUES ('1', 'Chase');
+INSERT INTO branch VALUES ('2', 'PNC');
+INSERT INTO customer VALUES (001, 'Marcin', 'house', 'LMarcin12', 'Landa123', '1');
+INSERT INTO customer VALUES (002, 'Guest', 'house2', 'Guest', 'Guest', '2');
+INSERT INTO employee VALUES ('Manager', 'Michal', 001 , 100000, 'house', 'LMichal12', 'Landa123', '1');
+INSERT INTO account_type VALUES ('Savings', 100, .01, 20);
+INSERT INTO account_type VALUES ('Checking', 100, 0, 100);
+INSERT INTO account VALUES (001, 30.0, 'Savings', 001, 'Chase');
+INSERT INTO account VALUES (002, 20.0, 'Checking', 001, 'Chase');
+INSERT INTO account VALUES (001, 10.0, 'Savings', 001, 'PNC');
+INSERT INTO account VALUES (003, 20.0, 'Savings', 002, 'Chase');
+INSERT INTO account VALUES (002, 20.0, 'Savings', 002, 'PNC');
