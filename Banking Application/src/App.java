@@ -195,7 +195,7 @@ public class App {
                             String money = input.nextLine(); //Withdraw ammount
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
-                            if(Float.parseFloat(allAccnts.get(pair)) >= Float.parseFloat(money)){ //Checks if there is enough money in the account
+                            if(Float.parseFloat(allAccnts.get(pair)) >= Float.parseFloat(money) && Float.parseFloat(money) >= 0){ //Checks if there is enough money in the account
                                 Statement st4 = conn.createStatement(); //Updates balance in database
                                 st4.executeUpdate("UPDATE account SET balance = balance - " + money + " WHERE accountID = " + account + " AND bank = '" + bank + "'"); 
                                 ResultSet rtID = st4.executeQuery("SELECT count(*) FROM transaction"); //gets the amount of transactions and sets the
@@ -210,8 +210,13 @@ public class App {
                                 System.out.println("----------------------");
                                 break;
                             } else {
-                                System.out.println("Not enough money!");
-                                break;
+                                if(!(Float.parseFloat(money) >= 0)){
+                                    System.out.println("Cannot be Negative!");
+                                    break;
+                                } else {
+                                    System.out.println("Not enough money!");
+                                    break;
+                                }
                             }   
                         }
 //---------------------------------------------------------------------------------------------------------------------- DEPOSIT
@@ -248,6 +253,10 @@ public class App {
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to deposit?");
                             String money = input.nextLine(); //Deposit ammount
+                            if(!(Float.parseFloat(money) >= 0)){
+                                System.out.println("Cannot be Negative!");
+                                break;
+                            }
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             Statement st4 = conn.createStatement(); //Updates balance in database
@@ -332,6 +341,10 @@ public class App {
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to transfer?");
                             String money = input.nextLine(); //Withdraw ammount
+                            if(!(Float.parseFloat(money) >= 0)){
+                                System.out.println("Cannot be Negative!");
+                                break;
+                            }
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             List<String> pair2 = new ArrayList<String>(); 
@@ -452,6 +465,10 @@ public class App {
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to transfer?");
                             String money = input.nextLine(); //Withdraw ammount
+                            if(!(Float.parseFloat(money) >= 0)){
+                                System.out.println("Cannot be Negative!");
+                                break;
+                            }
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             List<String> pair2 = new ArrayList<String>(); 
