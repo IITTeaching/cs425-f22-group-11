@@ -160,7 +160,7 @@ public class App {
                     String bankTo = "";
 
 //---------------------------------------------------------------------------------------------------------------------- WITHDRAW
-                    if(action.equals("Withdraw")){
+                    if(action.equals("Withdraw") && perms.contains("Withdraw")){
                         if(type.equals("Customer")){ //Gets the bank that the customer wants to withdraw from
                             while(true){
                                 System.out.println("----------------------");
@@ -215,7 +215,7 @@ public class App {
                             }   
                         }
 //---------------------------------------------------------------------------------------------------------------------- DEPOSIT
-                    } else if(action.equals("Deposit")){
+                    } else if(action.equals("Deposit") && perms.contains("Deposit")){
                         if(type.equals("Customer")){ //Gets the bank that the customer wants to withdraw from
                             while(true){
                                 System.out.println("----------------------");
@@ -265,7 +265,7 @@ public class App {
                             break;
                         }  
 //---------------------------------------------------------------------------------------------------------------------- TRANFER
-                    } else if(action.equals("Transfer")){
+                    } else if(action.equals("Transfer") && perms.contains("Transfer")){
                         if(type.equals("Customer")){ //Gets the bank that the customer wants to transfer from
                             while(true){
                                 System.out.println("----------------------");
@@ -363,7 +363,7 @@ public class App {
                             }   
                         }
 //---------------------------------------------------------------------------------------------------------------------- EXTERNAL TRANSFER
-                    } else if(action.equals("External Transfer")){
+                    } else if(action.equals("External Transfer") && perms.contains("External Transfer")){
                         if(type.equals("Customer")){ //Gets the bank that the customer wants to transfer from
                             while(true){
                                 System.out.println("----------------------");
