@@ -668,7 +668,7 @@ public class App {
                             rs6.close();
                     		
                     		//User selects bank to change
-                    		System.out.println("Which bank would you like to change the interest rate of? (Checking / Savings) ");
+                    		System.out.println("Which account type would you like to change the interest rate of? (Checking / Savings) ");
                             System.out.println("----------------------");
                     		String desBank = input.nextLine();
                     		
@@ -676,17 +676,43 @@ public class App {
                             System.out.println("----------------------");
                     		double newInterest = input.nextDouble();
                     		
+                    		Statement st4 = conn.createStatement();                        		
+                    		st4.executeUpdate("UPDATE account_type SET interest = " + newInterest + " WHERE type = '" + desBank + "'");
                     		
-                    		//for each account in branch
-                    			//add interest
+                    		System.out.println("Interest Updated");
 //---------------------------------------------------------------------------------------------------------------------- ADD OVERDRAFT FEES
                     	} else if (mngAction.equals("Add overdraft fees") && mngPrms.contains("Add overdraft fees")) {
-                    		System.out.println("What is the account number of the account you wish to delete? ");
-                            System.out.println("----------------------");
-                    		int overdraftFee = input.nextInt();
-                    		//for all accounts in branch
-                			// check if negative 
+                    		System.out.println("These are the current fees for the following banks: ");
                     		
+                    		Statement st6 = conn.createStatement();
+                            ResultSet rs6 = st6.executeQuery("SELECT * FROM account_type");
+                            
+                            int count = 0;
+                            while(rs6.next()){
+                                count++;
+                                String bankType = rs6.getString("type");
+                                String minBal = "" + rs6.getDouble("minimum_balance");
+                                String oldInt = "" + rs6.getDouble("interest");
+                                String fee = "" + rs6.getDouble("fee");
+
+                                System.out.println("\tType: " + bankType + "\tMinimum Balance: " + minBal + "\tInterest: " + oldInt 
+                                + "\tFee: " + fee);
+                    		}
+                            rs6.close();
+                    		
+                            //User selects bank to change
+                    		System.out.println("Which account type would you like to change the fees of? (Checking / Savings) ");
+                            System.out.println("----------------------");
+                    		String desBank = input.nextLine();
+                    		
+                    		System.out.println("What is the new interst rate you'd like to use? (Enter as: XXX.XX) ");
+                            System.out.println("----------------------");
+                    		double newFee = input.nextDouble();
+                    		
+                    		Statement st4 = conn.createStatement();                        		
+                    		st4.executeUpdate("UPDATE account_type SET fee = " + newFee + " WHERE type = '" + desBank + "'");
+                    		
+                    		System.out.println("Fee Updated");
                     	}
                     }
 //---------------------------------------------------------------------------------------------------------------------- ANALYTICS                       
