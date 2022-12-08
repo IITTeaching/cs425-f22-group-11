@@ -5,6 +5,7 @@ public class App {
         try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "Leslie14")){ //Connects to databse with port 9400, username postgres and Password Landa123
             if (conn != null) {
 
+                String bank = "";
                 Scanner input = new Scanner(System.in); //User Input for Account
                 System.out.println("Enter username:"); //Account Username
                 String uname = input.nextLine();
@@ -92,7 +93,7 @@ public class App {
                     }
                     name = lst.get(1); //gets the employees name
                     username = lst.get(5); //gets the employees username
-                    String bank = lst.get(9); //gets where the employee works
+                    bank = lst.get(9); //gets where the employee works
                     System.out.println("----------------------");
                     System.out.println(name + " Succuesfully Logged in as a " + type); //Prints the name and type of employee
                     System.out.println("Username: " + username); //Prints the username
@@ -160,7 +161,6 @@ public class App {
                     String action = input.nextLine(); //Gets what action user wants to do (Withdraw, Transfer...)
                     String account = "";
                     String accountTo = "";
-                    String bank = "";
                     String bankTo = "";
 
 //---------------------------------------------------------------------------------------------------------------------- WITHDRAW
