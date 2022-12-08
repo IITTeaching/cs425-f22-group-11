@@ -34,7 +34,7 @@ public class App {
                 List<String> accntIDs = new ArrayList<String>(); //list of customers account ids 
                 List<String> banks = new ArrayList<String>(); //list of customers banks 
                 List<String> perms = new ArrayList<String>(); //list of permissions allowed by current user
-                List<String> mngPrms = new ArrayList<String>(); //list of managment permissons
+                List<String> mngPrms = new ArrayList<String>(); //list of management permissions
                 Dictionary<List<String>, String> allAccnts = new Hashtable<List<String>, String>(); //Dictionary of key [aid, bank] and value balance
 
                 String type = null;
@@ -62,7 +62,7 @@ public class App {
                     System.out.println("--Accounts--");
                     while(rs3.next()){ 
                         String temp1 = "";
-                        List<String> accnt = new ArrayList<String>(); // Details of Each Individul Bank Account
+                        List<String> accnt = new ArrayList<String>(); // Details of Each individual Bank Account
                         List<String> pair = new ArrayList<String>(); //Pair of Account ID and Bank 
                         for (int i = 1; i <= length3; i++){
                             accnts.add(rs3.getString(i)); //adds each value from table into accnts
@@ -122,7 +122,7 @@ public class App {
                         }
                     }
                 } else {
-                    System.out.println("Account Doesnt Exist"); // Prints if the account doesnt exist
+                    System.out.println("Account Doesn't Exist"); // Prints if the account doesn't exist
                     System.exit(1);
                 }
                 
@@ -183,11 +183,11 @@ public class App {
                         while(!bank.equals("Skip")){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to withdraw from?");
-                            account = input.nextLine(); //Gets the acccount number they want to withdraw from
+                            account = input.nextLine(); //Gets the account number they want to withdraw from
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             if((allAccnts.get(pair) != null) || account.equals("Skip")){
-                                break; //Checks if the pair of account exists within their accesible account, or if they want to skip
+                                break; //Checks if the pair of account exists within their accessible account, or if they want to skip
                             } else {
                                 System.out.println("Account is not yours!");
                             }   
@@ -196,7 +196,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip"))){ //Checks if previously skipped
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to withdraw?");
-                            String money = input.nextLine(); //Withdraw ammount
+                            String money = input.nextLine(); //Withdraw amount
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             if(Float.parseFloat(allAccnts.get(pair)) >= Float.parseFloat(money) && Float.parseFloat(money) >= 0){ //Checks if there is enough money in the account
@@ -229,7 +229,7 @@ public class App {
                             while(true){
                                 System.out.println("----------------------");
                                 System.out.println("What bank would you like to deposit into?");
-                                bank = input.nextLine(); //Bank they want to deposi into
+                                bank = input.nextLine(); //Bank they want to deposit into
                                 if(banks.contains(bank) || bank.equals("Skip")){ //If the bank exists within their banks, it continues, else it tries again, Skip skips the action and goes back
                                     break;
                                 } else {
@@ -243,11 +243,11 @@ public class App {
                         while(!bank.equals("Skip")){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to deposit into?");
-                            account = input.nextLine(); //Gets the acccount number they want to deposit into
+                            account = input.nextLine(); //Gets the account number they want to deposit into
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             if((allAccnts.get(pair) != null) || account.equals("Skip")){
-                                break; //Checks if the pair of account exists within their accesible account, or if they want to skip
+                                break; //Checks if the pair of account exists within their accessible account, or if they want to skip
                             } else {
                                 System.out.println("Account is not yours!");
                             }   
@@ -256,7 +256,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip"))){ //Checks if previously skipped
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to deposit?");
-                            String money = input.nextLine(); //Deposit ammount
+                            String money = input.nextLine(); //Deposit amount
                             if(!(Float.parseFloat(money) >= 0)){
                                 System.out.println("Cannot be Negative!");
                                 break;
@@ -318,11 +318,11 @@ public class App {
                         while(!bank.equals("Skip")){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to transfer from?");
-                            account = input.nextLine(); //Gets the acccount number they want to transfer from
+                            account = input.nextLine(); //Gets the account number they want to transfer from
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             if((allAccnts.get(pair) != null) || account.equals("Skip")){
-                                break; //Checks if the pair of account exists within their accesible account, or if they want to skip
+                                break; //Checks if the pair of account exists within their accessible account, or if they want to skip
                             } else {
                                 System.out.println("Account is not yours!");
                             }   
@@ -331,7 +331,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip"))){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to transfer to?");
-                            accountTo = input.nextLine(); //Gets the acccount number they want to transfer to
+                            accountTo = input.nextLine(); //Gets the account number they want to transfer to
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(accountTo); pair.add(bank); //Makes a list of [account, bank]                   
                             if((bankAccnts.get(pair) != null) || accountTo.equals("Skip")){
@@ -344,7 +344,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip") || accountTo.equals("Skip"))){ //Checks if previously skipped
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to transfer?");
-                            String money = input.nextLine(); //Withdraw ammount
+                            String money = input.nextLine(); //Withdraw amount
                             if(!(Float.parseFloat(money) >= 0)){
                                 System.out.println("Cannot be Negative!");
                                 break;
@@ -420,11 +420,11 @@ public class App {
                         while(!bank.equals("Skip")){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to transfer from?");
-                            account = input.nextLine(); //Gets the acccount number they want to transfer from
+                            account = input.nextLine(); //Gets the account number they want to transfer from
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(account); pair.add(bank); //Makes a list of [account, bank]
                             if((allAccnts.get(pair) != null) || account.equals("Skip")){
-                                break; //Checks if the pair of account exists within their accesible account, or if they want to skip
+                                break; //Checks if the pair of account exists within their accessible account, or if they want to skip
                             } else {
                                 System.out.println("Account is not yours!");
                             }   
@@ -455,7 +455,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip") || bankTo.equals("Skip"))){ //Skips if previous action was skipped
                             System.out.println("----------------------");
                             System.out.println("What account would you like to transfer to?");
-                            accountTo = input.nextLine(); //Gets the acccount number they want to transfer to
+                            accountTo = input.nextLine(); //Gets the account number they want to transfer to
                             List<String> pair = new ArrayList<String>(); 
                             pair.add(accountTo); pair.add(bank); //Makes a list of [account, bank]                   
                             if((bankAccnts.get(pair) != null) || accountTo.equals("Skip")){
@@ -468,7 +468,7 @@ public class App {
                         while(!(account.equals("Skip") || bank.equals("Skip") || bankTo.equals("Skip") || accountTo.equals("Skip"))){ //Checks if previously skipped
                             System.out.println("----------------------");
                             System.out.println("How much $ would you like to transfer?");
-                            String money = input.nextLine(); //Withdraw ammount
+                            String money = input.nextLine(); //Withdraw amount
                             if(!(Float.parseFloat(money) >= 0)){
                                 System.out.println("Cannot be Negative!");
                                 break;
@@ -506,7 +506,7 @@ public class App {
 //---------------------------------------------------------------------------------------------------------------------- ACCOUNT MANAGEMENT MENU 
                     } else if(action.equals("Account Management") && perms.contains("Account Management")){
                     	System.out.println("What administrative task would you like to perform?");
-                    	System.out.println("Your choices are: ");
+                    	System.out.print("Your choices are: ");
                     	
                     	if(type.equals("Customer") || type.equals("Manager")){ 
                     		mngPrms.add("Create account");
@@ -516,13 +516,12 @@ public class App {
                     	} 
                     	if (type.equals("Manager")) {
                     		
-                    		mngPrms.add("Add interset");
+                    		mngPrms.add("Add interest");
                     		mngPrms.add("Add overdraft fees");
                     		mngPrms.add("Add account fees");
                         }
-                    		
                     	
-                    	System.out.print("What would you like to do?: " + mngPrms.get(0)); //Prints out all permissions of the user
+                    	System.out.print(mngPrms.get(0)); //Prints out all permissions of the user
                         for(int i = 1; i < (mngPrms.size()); i++){
                             System.out.print(", " + mngPrms.get(i));
                         }
@@ -545,15 +544,15 @@ public class App {
                         		System.out.println("How much money are you starting with (initial balance)? ");
                                 System.out.println("----------------------");
                         		int initBalance = input.nextInt(); // Get initial balance
-                        		
-                        		int actNum = (int)(Math.random()*(900001)+100000); //account number generation
+                        	
+                        		int actNum = (int)new Random().nextInt(900) + 100; //account number generation
                         		
                         		System.out.println("Which branch would you like to open the account at (Chase/PNC)? ");
                                 System.out.println("----------------------");
                         		String bnkName = input.nextLine(); // Get bank name
                         		
                         		Statement st4 = conn.createStatement();                        		
-                        		st4.executeUpdate("INSERT INTO account VALUES ("+cuID+","+initBalance+",'"+acctType+"','"+actNum+"','"+bnkName+"')");
+                        		st4.executeUpdate("INSERT INTO account VALUES ("+cuID+","+initBalance+",'"+acctType+"',"+actNum+",'"+bnkName+"')");
                     			
                     		} else {
                     			System.out.println("Unidentifiable response, aborting...");
@@ -649,10 +648,35 @@ public class App {
                             }
                     		
 //---------------------------------------------------------------------------------------------------------------------- ADD INTEREST
-                    	} else if (mngAction.equals("Add interset") && mngPrms.contains("Add interset")) {
-                    		System.out.println("What is the account number of the account you wish to delete? ");
+                    	} else if (mngAction.equals("Add interest") && mngPrms.contains("Add interest")) {
+                    		System.out.println("These are the current rates for the banks: ");
+                    		
+                    		Statement st6 = conn.createStatement();
+                            ResultSet rs6 = st6.executeQuery("SELECT * FROM account_type");
+                            
+                            int count = 0;
+                            while(rs6.next()){
+                                count++;
+                                String bankType = rs6.getString("type");
+                                String minBal = "" + rs6.getDouble("minimum_balance");
+                                String oldInt = "" + rs6.getDouble("interest");
+                                String fee = "" + rs6.getDouble("fee");
+
+                                System.out.println("\tType: " + bankType + "\tMinimum Balance: " + minBal + "\tInterest: " + oldInt 
+                                + "\tFee: " + fee);
+                    		}
+                            rs6.close();
+                    		
+                    		//User selects bank to change
+                    		System.out.println("Which bank would you like to change the interest rate of? (Checking / Savings) ");
                             System.out.println("----------------------");
-                    		int addInterest = input.nextInt();
+                    		String desBank = input.nextLine();
+                    		
+                    		System.out.println("What is the new interst rate you'd like to use? (Enter as: 0.XXX) ");
+                            System.out.println("----------------------");
+                    		double newInterest = input.nextDouble();
+                    		
+                    		
                     		//for each account in branch
                     			//add interest
 //---------------------------------------------------------------------------------------------------------------------- ADD OVERDRAFT FEES
