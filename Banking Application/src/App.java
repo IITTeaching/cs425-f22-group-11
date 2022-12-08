@@ -2,7 +2,7 @@ import java.util.*;
 import java.sql.*;
 public class App {
     public static void main(String[] args) {
-        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:9400/postgres", "postgres", "Landa123")){ //Connects to databse with port 9400, username postgres and Password Landa123
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "Leslie14")){ //Connects to databse with port 9400, username postgres and Password Landa123
             if (conn != null) {
 
                 Scanner input = new Scanner(System.in); //User Input for Account
@@ -130,12 +130,14 @@ public class App {
                     perms.add("Deposit");
                     perms.add("Transfer");
                     perms.add("External Transfer");
+                    perms.add("Account Management");
                     perms.add("Logout");
                 } else if (type.equals("Manager")){
                     perms.add("Withdraw");
                     perms.add("Deposit");
                     perms.add("Transfer");
                     perms.add("External Transfer");
+                    perms.add("Account Management");
                     perms.add("Logout");
                 } if(type.equals("Teller")){
                     perms.add("Withdraw");
@@ -499,6 +501,10 @@ public class App {
                                 break;
                             }   
                         };
+//---------------------------------------------------------------------------------------------------------------------- ACCOUNT MANAGEMENT MENU 
+                    } else if(action.equals("Account Management") && perms.contains("Account Management")){
+                    	
+                    }
 //---------------------------------------------------------------------------------------------------------------------- LOGOUT
                     } else if(action.equals("Logout")){
                         System.out.println("Bye Bye!");
