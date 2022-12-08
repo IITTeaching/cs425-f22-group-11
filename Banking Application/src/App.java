@@ -506,9 +506,9 @@ public class App {
 //---------------------------------------------------------------------------------------------------------------------- ACCOUNT MANAGEMENT MENU 
                     } else if(action.equals("Account Management") && perms.contains("Account Management")){
                     	System.out.println("What administrative task would you like to perform?");
-                    	System.out.println("Your choices are: " + );
+                    	System.out.println("Your choices are: ");
                     	
-                    	if(type.equals("Customer") || type.equals("Manager"){ 
+                    	if(type.equals("Customer") || type.equals("Manager")){ 
                     		mngPrms.add("Create account");
                     		mngPrms.add("Delete account");
                     		mngPrms.add("Show statement");
@@ -546,7 +546,7 @@ public class App {
                                 System.out.println("----------------------");
                         		int initBalance = input.nextInt(); // Get initial balance
                         		
-                        		int actNum = (int)(Math.random()*(900001)+100000) //account number generation
+                        		int actNum = (int)(Math.random()*(900001)+100000); //account number generation
                         		
                         		System.out.println("Which branch would you like to open the account at (Chase/PNC)? ");
                                 System.out.println("----------------------");
@@ -568,7 +568,7 @@ public class App {
                     		int acctNumber = input.nextInt(); // get account number
                     		//Delete account
                     		Statement st4 = conn.createStatement();                        		
-                    		st4.executeUpdate("DELETE FROM account WHERE accountID=" + accountNum);
+                    		st4.executeUpdate("DELETE FROM account WHERE accountID=" + acctNumber);
 //---------------------------------------------------------------------------------------------------------------------- SHOW STATEMENT
                     	} else if (mngAction.equals("Show statement") && mngPrms.contains("Show statement")) {
                     		System.out.println("What is the # of the account you wish to see the statement of? ");
@@ -582,11 +582,11 @@ public class App {
                             while(rs1.next()){
                             	cnt++;
                             	String bal = "" + rs1.getDouble("balance");
-                                String type = rs1.getString("isAccountType");
-                                String bank = rs1.getString("bank");
+                                String type_st = rs1.getString("isAccountType");
+                                String bank_st = rs1.getString("bank");
 
-                                System.out.println("\tAccount ID: " + acctNumber + "\tBalance: " + bal + "\tType: " + type 
-                                + "\tBank: " + bank);
+                                System.out.println("\tAccount ID: " + acctNumber + "\tBalance: " + bal + "\tType: " + type_st 
+                                + "\tBank: " + bank_st);
 
                     		}
                             rs1.close();
@@ -604,13 +604,13 @@ public class App {
                                 int transID = rs6.getInt("tID");
                                 String amnt = "" + rs6.getDouble("amount");
                                 String date = rs6.getDate("description").toString();
-                                String type = rs6.getString("type");
+                                String type_state = rs6.getString("type");
                                 int send = rs6.getInt("accountID");
                                 int recieve = rs6.getInt("toAccount");
-                                String bank = rs6.getString("bank");
+                                String bank_state = rs6.getString("bank");
 
                                 System.out.println("\tTransaction: " + transID + "\tAmount: " + amnt + "\tDate: " + date 
-                                + "\tType: " + type  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank);
+                                + "\tType: " + type_state  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank_state);
 
                     		}
                             rs6.close();
@@ -632,15 +632,15 @@ public class App {
                             while(rs6.next()){
                                 count++;
                                 int transID = rs6.getInt("tID");
-                                String amnt = rs6.getDouble("amount").toString();
+                                String amnt = "" + rs6.getDouble("amount");
                                 String date = rs6.getDate("description").toString();
-                                String type = rs6.getString("type");
+                                String type_pend = rs6.getString("type");
                                 int send = rs6.getInt("accountID");
                                 int recieve = rs6.getInt("toAccount");
-                                String bank = rs6.getString("bank");
+                                String bank_pend = rs6.getString("bank");
 
                                 System.out.println("\tTransaction: " + transID + "\tAmount: " + amnt + "\tDate: " + date 
-                                + "\tType: " + type  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank);
+                                + "\tType: " + type_pend  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank_pend);
 
                     		}
                             rs6.close();
@@ -666,7 +666,7 @@ public class App {
                     	}
                     }
 //---------------------------------------------------------------------------------------------------------------------- ANALYTICS                       
-	                } else if(action.equals("Analytics") && perms.contains("Analytics")){
+	                else if(action.equals("Analytics") && perms.contains("Analytics")){
 	                    System.out.println("What analytic would you like to see?: Total Net Worth, Total Bank Accounts, Total Customers");
 	                    System.out.println("----------------------");
 	                    String anyl = input.nextLine();
@@ -691,7 +691,6 @@ public class App {
 	                    } else {
 	                        System.out.println("Not an option!");
 	                    }
-	                }
 //---------------------------------------------------------------------------------------------------------------------- LOGOUT
                     } else if(action.equals("Logout")){
                         System.out.println("Bye Bye!");
