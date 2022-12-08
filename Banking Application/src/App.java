@@ -34,6 +34,7 @@ public class App {
                 List<String> accntIDs = new ArrayList<String>(); //list of customers account ids 
                 List<String> banks = new ArrayList<String>(); //list of customers banks 
                 List<String> perms = new ArrayList<String>(); //list of permissions allowed by current user
+                List<String> mngPrms = new ArrayList<String>(); //list of managment permissons
                 Dictionary<List<String>, String> allAccnts = new Hashtable<List<String>, String>(); //Dictionary of key [aid, bank] and value balance
 
                 String type = null;
@@ -139,6 +140,7 @@ public class App {
                     perms.add("External Transfer");
                     perms.add("Account Management");
                     perms.add("Logout");
+                    perms.add("Analytics");
                 } if(type.equals("Teller")){
                     perms.add("Withdraw");
                     perms.add("Deposit");
@@ -503,8 +505,193 @@ public class App {
                         };
 //---------------------------------------------------------------------------------------------------------------------- ACCOUNT MANAGEMENT MENU 
                     } else if(action.equals("Account Management") && perms.contains("Account Management")){
+                    	System.out.println("What administrative task would you like to perform?");
+                    	System.out.println("Your choices are: " + );
                     	
+                    	if(type.equals("Customer") || type.equals("Manager"){ 
+                    		mngPrms.add("Create account");
+                    		mngPrms.add("Delete account");
+                    		mngPrms.add("Show statement");
+                    		mngPrms.add("Pending transactions");
+                    	} 
+                    	if (type.equals("Manager")) {
+                    		
+                    		mngPrms.add("Add interset");
+                    		mngPrms.add("Add overdraft fees");
+                    		mngPrms.add("Add account fees");
+                        }
+                    		
+                    	
+                    	System.out.print("What would you like to do?: " + mngPrms.get(0)); //Prints out all permissions of the user
+                        for(int i = 1; i < (mngPrms.size()); i++){
+                            System.out.print(", " + mngPrms.get(i));
+                        }
+                        
+                        System.out.println("");
+                        System.out.println("----------------------");
+                        String mngAction = input.nextLine(); //Gets what action user wants to do (...)
+                        
+//---------------------------------------------------------------------------------------------------------------------- CREATE ACCOUNT
+                    	if (mngAction.equals("Create account") && mngPrms.contains("Create account")) {
+                    		System.out.println("What type of account would you like to create? (Checking/Savings)");
+                            System.out.println("----------------------");
+                    		String acctType = input.nextLine();
+                    		// Get Acct Type
+                    		if (acctType.equals("Checking") || acctType.equals("Savings") ) {
+                    			System.out.println("What is the desired customer ID? ()");
+                                System.out.println("----------------------");
+                        		int cuID = input.nextInt(); // Get customer ID
+                        		
+                        		System.out.println("How much money are you starting with (initial balance)? ");
+                                System.out.println("----------------------");
+                        		int initBalance = input.nextInt(); // Get initial balance
+                        		
+                        		int actNum = (int)(Math.random()*(900001)+100000) //account number generation
+                        		
+                        		System.out.println("Which branch would you like to open the account at (Chase/PNC)? ");
+                                System.out.println("----------------------");
+                        		String bnkName = input.nextLine(); // Get bank name
+                        		
+                        		Statement st4 = conn.createStatement();                        		
+                        		st4.executeUpdate("INSERT INTO account VALUES ("+cuID+","+initBalance+",'"+acctType+"','"+actNum+"','"+bnkName+"')");
+                    			
+                    		} else {
+                    			System.out.println("Unidentifiable response, aborting...");
+                    			break;
+                    		}
+
+//---------------------------------------------------------------------------------------------------------------------- DELETE ACCOUNT       		
+                    	} else if (mngAction.equals("Delete account") && mngPrms.contains("Delete account")) {
+                    		//User selects account to delete
+                    		System.out.println("What is the account number of the account you wish to delete? ");
+                            System.out.println("----------------------");
+                    		int acctNumber = input.nextInt(); // get account number
+                    		//Delete account
+                    		Statement st4 = conn.createStatement();                        		
+                    		st4.executeUpdate("DELETE FROM account WHERE accountID=" + accountNum);
+//---------------------------------------------------------------------------------------------------------------------- SHOW STATEMENT
+                    	} else if (mngAction.equals("Show statement") && mngPrms.contains("Show statement")) {
+                    		System.out.println("What is the # of the account you wish to see the statement of? ");
+                            System.out.println("----------------------");
+                    		int acctNumber = input.nextInt(); // get account number
+                    		
+                    		Statement st1 = conn.createStatement();
+                            ResultSet rs1 = st1.executeQuery("SELECT * FROM account WHERE accountID = "+ acctNumber);
+                    		
+                            int cnt = 0;
+                            while(rs1.next()){
+                            	cnt++;
+                            	String bal = "" + rs1.getDouble("balance");
+                                String type = rs1.getString("isAccountType");
+                                String bank = rs1.getString("bank");
+
+                                System.out.println("\tAccount ID: " + acctNumber + "\tBalance: " + bal + "\tType: " + type 
+                                + "\tBank: " + bank);
+
+                    		}
+                            rs1.close();
+                            if (cnt <= 0) {
+                            	System.out.println("Couldn't find accounts");
+                            }
+                    		
+                    		Statement st6 = conn.createStatement();
+                            ResultSet rs6 = st6.executeQuery("SELECT * FROM transaction WHERE accountID = "+ acctNumber +
+                            		" AND (SELECT date_part('month', current_date)-1) = (SELECT date_part('month', description))");
+                            
+                            int count = 0;
+                            while(rs6.next()){
+                                count++;
+                                int transID = rs6.getInt("tID");
+                                String amnt = "" + rs6.getDouble("amount");
+                                String date = rs6.getDate("description").toString();
+                                String type = rs6.getString("type");
+                                int send = rs6.getInt("accountID");
+                                int recieve = rs6.getInt("toAccount");
+                                String bank = rs6.getString("bank");
+
+                                System.out.println("\tTransaction: " + transID + "\tAmount: " + amnt + "\tDate: " + date 
+                                + "\tType: " + type  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank);
+
+                    		}
+                            rs6.close();
+                            if (count <= 0) {
+                            	System.out.println("Couldn't find any transactions for the month");
+                            }
+//---------------------------------------------------------------------------------------------------------------------- SHOW PENDING TRANSACTIONS
+                    	} else if (mngAction.equals("Pending transactions") && mngPrms.contains("Pending transactions")) {
+                    		
+                    		System.out.println("What is the # of the account you wish to see the pending transactions of? ");
+                            System.out.println("----------------------");
+                    		int acctNumber = input.nextInt(); // get account number
+                    		
+                    		Statement st6 = conn.createStatement();
+                            ResultSet rs6 = st6.executeQuery("SELECT * FROM transaction WHERE accountID = "+ acctNumber +
+                            		" AND (SELECT date_part('month', current_date)) = (SELECT date_part('month', description))");
+                            
+                            int count = 0;
+                            while(rs6.next()){
+                                count++;
+                                int transID = rs6.getInt("tID");
+                                String amnt = rs6.getDouble("amount").toString();
+                                String date = rs6.getDate("description").toString();
+                                String type = rs6.getString("type");
+                                int send = rs6.getInt("accountID");
+                                int recieve = rs6.getInt("toAccount");
+                                String bank = rs6.getString("bank");
+
+                                System.out.println("\tTransaction: " + transID + "\tAmount: " + amnt + "\tDate: " + date 
+                                + "\tType: " + type  + "\tFrom: " + send  + "\tTo: " + recieve + "\tBank: " + bank);
+
+                    		}
+                            rs6.close();
+                            if (count <= 0) {
+                            	System.out.println("Couldn't find any transactions for the month");
+                            }
+                    		
+//---------------------------------------------------------------------------------------------------------------------- ADD INTEREST
+                    	} else if (mngAction.equals("Add interset") && mngPrms.contains("Add interset")) {
+                    		System.out.println("What is the account number of the account you wish to delete? ");
+                            System.out.println("----------------------");
+                    		int addInterest = input.nextInt();
+                    		//for each account in branch
+                    			//add interest
+//---------------------------------------------------------------------------------------------------------------------- ADD OVERDRAFT FEES
+                    	} else if (mngAction.equals("Add overdraft fees") && mngPrms.contains("Add overdraft fees")) {
+                    		System.out.println("What is the account number of the account you wish to delete? ");
+                            System.out.println("----------------------");
+                    		int overdraftFee = input.nextInt();
+                    		//for all accounts in branch
+                			// check if negative 
+                    		
+                    	}
                     }
+//---------------------------------------------------------------------------------------------------------------------- ANALYTICS                       
+	                } else if(action.equals("Analytics") && perms.contains("Analytics")){
+	                    System.out.println("What analytic would you like to see?: Total Net Worth, Total Bank Accounts, Total Customers");
+	                    System.out.println("----------------------");
+	                    String anyl = input.nextLine();
+	                    if(anyl.equals("Total Net Worth")){
+	                        Statement st6 = conn.createStatement();
+	                        ResultSet rs6 = st6.executeQuery("SELECT SUM(balance) FROM account WHERE bank = '" + bank + "'"); 
+	                        rs6.next();
+	                        String bal = rs6.getString(1);
+	                        System.out.println("Net Worth of " + bank + " is " + bal);
+	                    } else if(anyl.equals("Total Bank Accounts")){
+	                        Statement st6 = conn.createStatement();
+	                        ResultSet rs6 = st6.executeQuery("SELECT count(*) FROM account WHERE bank = '" + bank + "'"); 
+	                        rs6.next();
+	                        String tAccts = rs6.getString(1);
+	                        System.out.println("Total amount of accounts at " + bank + " is " + tAccts);
+	                    } else if(anyl.equals("Total Customers")){
+	                        Statement st6 = conn.createStatement();
+	                        ResultSet rs6 = st6.executeQuery("SELECT count(*) FROM (SELECT DISTINCT customerID FROM account WHERE bank = '" + bank + "') a") ;; 
+	                        rs6.next();
+	                        String tCmrs = rs6.getString(1);
+	                        System.out.println("Total amount of customers at " + bank + " is " + tCmrs);
+	                    } else {
+	                        System.out.println("Not an option!");
+	                    }
+	                }
 //---------------------------------------------------------------------------------------------------------------------- LOGOUT
                     } else if(action.equals("Logout")){
                         System.out.println("Bye Bye!");
