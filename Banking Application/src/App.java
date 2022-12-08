@@ -34,7 +34,7 @@ public class App {
                 List<String> accntIDs = new ArrayList<String>(); //list of customers account ids 
                 List<String> banks = new ArrayList<String>(); //list of customers banks 
                 List<String> perms = new ArrayList<String>(); //list of permissions allowed by current user
-                List<String> mngPrms = new ArrayList<String>(); //list of management permissions
+                
                 Dictionary<List<String>, String> allAccnts = new Hashtable<List<String>, String>(); //Dictionary of key [aid, bank] and value balance
 
                 String type = null;
@@ -507,6 +507,8 @@ public class App {
                     } else if(action.equals("Account Management") && perms.contains("Account Management")){
                     	System.out.println("What administrative task would you like to perform?");
                     	System.out.print("Your choices are: ");
+                    	
+                    	List<String> mngPrms = new ArrayList<String>(); //list of management permissions
                     	
                     	if(type.equals("Customer") || type.equals("Manager")){ 
                     		mngPrms.add("Create account");
